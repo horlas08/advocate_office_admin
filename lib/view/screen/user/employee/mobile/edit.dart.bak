@@ -1,0 +1,114 @@
+import 'package:advocateoffice/controller/ui/user/employee.dart';
+import 'package:advocateoffice/model/employee_data.dart';
+import 'package:advocateoffice/view/common_widgets.dart/common_field.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_button.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/date_picker.dart';
+import 'package:advocateoffice/view/common_widgets.dart/image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+
+class EmployeeEdit extends StatelessWidget {
+  EmployeeEdit({
+    super.key,
+    required this.data,
+    required this.controller,
+  });
+  final EmployeeDataModel data;
+  final EmployeeController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    controller.employeeNameController.text = data.name.toString();
+    controller.employeeNumberController.text = data.phone.toString();
+    controller.employeeMailController.text = data.mail.toString();
+    controller.employeeDesignationController.text = data.designation.toString();
+
+    final parsedDate = DateFormat("d MMM yyyy").parse(data.joinDate.toString());
+
+    controller.selectedDate.value = parsedDate;
+    return Scaffold(
+      appBar: AppBar(
+        title: const CustomTextWidget(text: "Employee Edit",fontColor: Colors.white,),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Theme.of(context).focusColor,
+          width: 700,
+          padding: const EdgeInsets.all(24),
+          child: Form(
+            key: controller.fromKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                CustomTextWidget(text: "Employee Image"),
+                const SizedBox(height: 10),
+                ImagePick(
+                  controller: controller,
+                ),
+                const SizedBox(height: 25),
+                CommonField(
+                  controller: controller.employeeNameController,
+                  text: 'Employee Name',
+                  hintText: 'Enter employee name',
+                  validator: 'Please, Enter employee name',
+                  keyboardType: TextInputType.name,
+                ),
+                const SizedBox(height: 16),
+                CommonField(
+                  controller: controller.employeeNumberController,
+                  text: 'Employee Phone Number',
+                  hintText: 'Enter employee phone number',
+                  validator: 'Please ,Enter employee phone number',
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                ),
+                const SizedBox(height: 16),
+                CommonField(
+                  controller: controller.employeeMailController,
+                  text: 'Employee mail address',
+                  hintText: 'Enter employee mail address',
+                  validator: 'Please, Enter employee mail address',
+                  keyboardType: TextInputType.text,
+                ),
+                const SizedBox(height: 16),
+                CommonField(
+                  controller: controller.employeeDesignationController,
+                  text: 'Designation',
+                  hintText: 'Enter Designation',
+                  validator: 'Please, Enter Designation',
+                  keyboardType: TextInputType.text,
+                ),
+                const SizedBox(height: 16),
+                SfDatePickerWidget(
+                  selectedDate: controller.selectedDate,
+                  title: 'Join Date',
+                  maxDate: DateTime(2030),
+                  onSelectionChanged: (args) {
+                    if (args.value is DateTime) {
+                      controller.updateSelectedDate(args.value);
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+                const SizedBox(height: 16),
+                Align(
+                  alignment: Alignment.center,
+                  child:
+                      CustomButtonWidget(buttonName: "أكد", onTap: () {}),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

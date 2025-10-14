@@ -1,0 +1,110 @@
+import 'package:advocateoffice/controller/ui/visitor.dart';
+import 'package:advocateoffice/model/visitor.dart';
+import 'package:advocateoffice/view/common_widgets.dart/common_drop_down.dart';
+import 'package:advocateoffice/view/common_widgets.dart/common_field.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_button.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+
+class VisitorEdit extends StatelessWidget {
+  VisitorEdit({
+    super.key,
+    required this.data,
+  });
+  final VisitorModel data;
+  final VisitorController controller = Get.put(VisitorController());
+
+  @override
+  Widget build(BuildContext context) {
+    controller.visitorNameController.text = data.name.toString();
+    controller.visitorNumberController.text = data.phone.toString();
+    controller.selectPriority.value = data.priority.toString();
+    controller.amountController.text = data.fee.toString();
+    return Scaffold(
+      appBar: AppBar(title: const Text("Visitor Update")),
+      body: SingleChildScrollView(
+        child: Form(
+          key: controller.fromKey,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              spacing: 16,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CommonField(
+                  controller: controller.visitorNameController,
+                  text: 'Visitor Name',
+                  hintText: 'Enter Visitor name',
+                  validator: 'Enter Visitor name',
+                  keyboardType: TextInputType.name,
+                ),
+                CommonField(
+                  controller: controller.visitorNumberController,
+                  text: 'Visitor Number',
+                  hintText: 'Enter Visitor Number',
+                  validator: 'Enter Visitor number',
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                ),
+                CommonDropDown(
+                    context: context,
+                    label: "Case Type",
+                    value: controller.selectCaseType,
+                    items: controller.caseTypeList,
+                    onChanged: (value) {
+                      controller.selectCaseType.value = value!;
+                    }),
+                CommonField(
+                  controller: controller.amountController,
+                  text: 'Case Fee',
+                  hintText: 'Enter Case Fee',
+                  validator: 'Enter Case Fee',
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                ),
+                CommonDropDown(
+                    context: context,
+                    label: "Priority",
+                    value: controller.selectPriority,
+                    items: controller.priorityList,
+                    onChanged: (value) {
+                      controller.selectPriority.value = value!;
+                    }),
+                CommonField(
+                  controller: controller.referenceNamePhoneController,
+                  text: 'Reference Name & Phone',
+                  hintText: 'Enter Reference Name & Phone',
+                  validator: 'Enter Reference Name & Phone',
+                  keyboardType: TextInputType.text,
+                ),
+                CommonField(
+                  minLines: 5,
+                  controller: controller.amountController,
+                  text: 'Remarks',
+                  hintText: 'Enter Remarks',
+                  validator: 'Enter Remarks',
+                  keyboardType: TextInputType.text,
+                ),
+                CustomButtonWidget(
+                  buttonName: 'أكد',
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

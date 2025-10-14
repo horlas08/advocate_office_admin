@@ -1,0 +1,187 @@
+import 'package:advocateoffice/controller/ui/case/case_list.dart';
+import 'package:advocateoffice/view/common_widgets.dart/common_drop_down.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_alertDialogue.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/header_mobile.dart';
+import 'package:advocateoffice/view/common_widgets.dart/mobile_nav_bar.dart';
+import 'package:advocateoffice/routes/screen_name.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_search_and_add_field_mobile.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_selectable_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_table_heading_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/datatable.dart';
+import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+
+class CaseListMobile extends StatelessWidget {
+  CaseListMobile({super.key, required this.controller, required this.width});
+  final CaseListController controller;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const DashboardHeaderMobile(title: 'حالة'),
+      ),
+      drawer: NavigationBarViewMobile(),
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SearchAndAddSectionWidgetMobile(
+                            searchTap: (searchTap) {},
+                            buttonTap: () {
+                              Get.toNamed(RoutesName.caseCreate);
+                            },
+                            buttonName: "أضف حالة",
+                            totalData: "",
+                          ),
+                          const SizedBox(height: 16),
+                          Obx(
+                            () => CommonTableWidget(
+                              width: width,
+                              listLength: controller.filteredCaseList.length,
+                              dataColumn: const [
+                                DataColumn2(label: Center(child: CustomTblHeadText(text: "SL")), fixedWidth: 50),
+                                DataColumn2(label: Center(child: CustomTblHeadText(text: "معرف الحالة")), fixedWidth: 120),
+                                DataColumn2(label: Center(child: CustomTblHeadText(text: "معلومات العميل"))),
+                                DataColumn2(label: Center(child: CustomTblHeadText(text: "نوع العميل"))),
+                                DataColumn2(label: CustomTblHeadText(text: "نوع الحالة")),
+                                DataColumn2(label: CustomTblHeadText(text: "مرحلة القضية")),
+                                DataColumn2(label: CustomTblHeadText(text: "حالة")),
+                                DataColumn2(label: CustomTblHeadText(text: "أفضلية")),
+                                DataColumn2(label: CustomTblHeadText(text: "تعليق")),
+                                DataColumn2(label: CustomTblHeadText(text: "تعيين ل")),
+                                DataColumn2(label: Center(child: CustomTblHeadText(text: "عمل")), fixedWidth: 120),
+                              ],
+                              dataRow: List.generate(
+                                controller.filteredCaseList.length,
+                                (index) {
+                                  var data = controller.filteredCaseList[index];
+                                  return DataRow(cells: [
+                                    DataCell(Center(child: CustomSelectableTextWidget(text: "${index + 1}"))),
+                                    DataCell(Center(child: CustomSelectableTextWidget(text: "${data.caseID.toString()}"))),
+                                    DataCell(CustomSelectableTextWidget(text: "${data.clientName}\n${data.clientPhone}")),
+                                    DataCell(CustomSelectableTextWidget(text: "${data.clientType.toString()}")),
+                                    DataCell(CustomSelectableTextWidget(text: "${data.caseType.toString()}")),
+                                    DataCell(CustomSelectableTextWidget(text: "${data.caseStage.toString()}")),
+                                    DataCell(CustomSelectableTextWidget(text: "${data.status.toString()}")),
+                                    DataCell(CustomSelectableTextWidget(text: "${data.priority.toString()}")),
+                                    DataCell(CustomSelectableTextWidget(
+                                      text: "${data.remark.toString()}",
+                                      maxLine: 2,
+                                    )),
+                                    DataCell(CustomSelectableTextWidget(text: "Jhon Doe")),
+                                    DataCell(
+                                      Center(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                child: const Icon(Icons.remove_red_eye),
+                                                onTap: () {
+                                                  Get.toNamed('${Get.currentRoute}${RoutesName.caseDetails}/${data.caseID}');
+                                                },
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: InkWell(
+                                                child: const Icon(Icons.work_outline),
+                                                onTap: () {
+                                                  buildShowDialog(context: context);
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ]);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> buildShowDialog({required BuildContext context}) {
+    return showDialog(
+      context: context,
+      builder: (context) => CustomAlertDialogue(
+        title: "Assign Case to Lower",
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 350,
+              child: CommonDropDown(
+                context: context,
+                label: "Select Lower",
+                value: controller.selectEmployee,
+                items: controller.employeeList,
+                onChanged: (value) {
+                  if (value != null) {
+                    controller.selectEmployee.value = value;
+                    controller.selectedEmployeeList.add(value);
+                  }
+                },
+              ),
+            ),
+            SizedBox(height: 10),
+            Obx(
+              () => Column(
+                spacing: 5,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: controller.selectedEmployeeList.map(
+                  (id) {
+                    return Chip(
+                      label: CustomTextWidget(text: id, fontSize: 14),
+                      deleteIcon: Icon(Icons.delete_forever),
+                      onDeleted: () {
+                        controller.selectedEmployeeList.remove(id);
+                      },
+                    );
+                  },
+                ).toList(),
+              ),
+            )
+          ],
+        ),
+        confirmButtonFunction: () {
+          if (controller.selectedEmployeeList.isEmpty) {
+            EasyLoading.showError("Please , Assign Lower.");
+            return;
+          }
+          Get.back();
+        },
+      ),
+    );
+  }
+}

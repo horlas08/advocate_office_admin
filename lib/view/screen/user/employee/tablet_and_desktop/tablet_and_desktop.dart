@@ -1,0 +1,317 @@
+import 'package:advocateoffice/controller/ui/user/employee.dart';
+import 'package:advocateoffice/view/common_widgets.dart/common_field.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_alertDialogue.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_search_and_add_field.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_selectable_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_table_heading_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/datatable.dart';
+import 'package:advocateoffice/view/common_widgets.dart/date_picker.dart';
+import 'package:advocateoffice/view/common_widgets.dart/header.dart';
+import 'package:advocateoffice/view/common_widgets.dart/nav_bar.dart';
+import 'package:advocateoffice/view/common_widgets.dart/image.dart';
+import 'package:advocateoffice/view/common_widgets.dart/dashboard_shimmer.dart';
+import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:flutter/services.dart';
+
+class EmployeeTabletDesktop extends StatelessWidget {
+  EmployeeTabletDesktop({super.key, required this.controller, this.width});
+  final EmployeeController controller;
+  final double? width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          NavigationBarView(),
+          Obx(
+            () => controller.isLoading.isTrue
+                ? Expanded(child: DashboardShimmer())
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const DashboardHeader(title: 'الموظفين'),
+                            const SizedBox(height: 20),
+                            Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SearchAndAddSectionWidget(
+                                      totalData: "إجمالي الموظفين :  ",
+                                      searchController:
+                                          controller.searchController,
+                                      searchTap: (query) {
+                                        //controller.filterEmployee(query);
+                                      },
+                                      buttonTap: () {
+                                        controller.clearDataFunction();
+                                        _showAddEditDialog(
+                                            context: context,
+                                            title: "إضافة موظف جديد");
+                                      },
+                                      buttonName: 'إضافة موظف',
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Obx(
+                                      () => CommonTableWidget(
+                                        width: width ??
+                                            MediaQuery.of(context).size.width -
+                                                260,
+                                        listLength:
+                                            controller.employeeList.length,
+                                        dataColumn: const [
+                                          DataColumn2(
+                                              label: Center(
+                                                  child: CustomTblHeadText(
+                                                      text: "م")),
+                                              fixedWidth: 50),
+                                          DataColumn2(
+                                              label: CustomTblHeadText(
+                                                  text: "صورة")),
+                                          DataColumn2(
+                                              label: CustomTblHeadText(
+                                                  text: "الاسم")),
+                                          DataColumn2(
+                                              label: CustomTblHeadText(
+                                                  text: "الهاتف")),
+                                          DataColumn2(
+                                              label: CustomTblHeadText(
+                                                  text: "البريد الإلكتروني")),
+                                          DataColumn2(
+                                              label: CustomTblHeadText(
+                                                  text: "المسمى الوظيفي")),
+                                          DataColumn2(
+                                              label: CustomTblHeadText(
+                                                  text: "الخبرة")),
+                                          DataColumn2(
+                                              label: CustomTblHeadText(
+                                                  text: "تاريخ الانضمام")),
+                                          DataColumn2(
+                                              label: CustomTblHeadText(
+                                                  text: "الحالة")),
+                                          DataColumn2(
+                                              label: Center(
+                                                  child: CustomTblHeadText(
+                                                      text: "الإجراءات")),
+                                              fixedWidth: 70),
+                                        ],
+                                        dataRow: List.generate(
+                                          controller.employeeList.length,
+                                          (index) {
+                                            var data =
+                                                controller.employeeList[index];
+                                            return DataRow(cells: [
+                                              DataCell(
+                                                  CustomSelectableTextWidget(
+                                                      text: "${index + 1}")),
+                                              DataCell(buildImage(
+                                                  data.image.toString())),
+                                              DataCell(
+                                                  CustomSelectableTextWidget(
+                                                      text: "${data.name}")),
+                                              DataCell(
+                                                  CustomSelectableTextWidget(
+                                                      text: "${data.phone}")),
+                                              DataCell(
+                                                  CustomSelectableTextWidget(
+                                                      text: "${data.mail}")),
+                                              DataCell(CustomSelectableTextWidget(
+                                                  text: "${data.designation}")),
+                                              DataCell(
+                                                  CustomSelectableTextWidget(
+                                                      text:
+                                                          "${data.expertise}")),
+                                              DataCell(
+                                                  CustomSelectableTextWidget(
+                                                      text:
+                                                          "${data.joinDate}")),
+                                              DataCell(
+                                                  CustomSelectableTextWidget(
+                                                      text: data.status == 1
+                                                          ? "نشط"
+                                                          : "غير نشط")),
+                                              DataCell(
+                                                Center(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: FittedBox(
+                                                            child: Switch(
+                                                                value: true,
+                                                                onChanged:
+                                                                    (v) {})),
+                                                      ),
+                                                      Expanded(
+                                                        child: InkWell(
+                                                          child: const Icon(
+                                                            Icons.edit,
+                                                            size: 20,
+                                                          ),
+                                                          onTap: () {
+                                                            controller
+                                                                .initialDataFunction(
+                                                                    data: data);
+                                                            _showAddEditDialog(
+                                                                context:
+                                                                    context,
+                                                                title:
+                                                                    "تعديل الموظف");
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ]);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildImage(String data) => Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Image(
+          image: NetworkImage(data),
+          height: 50,
+          width: 50,
+        ),
+      );
+
+  void _showAddEditDialog({required BuildContext context, String? title}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlertDialogue(
+            title: title ?? "معلومات الموظف",
+            body: Form(
+              key: controller.fromKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  CustomTextWidget(text: "صورة الموظف"),
+                  const SizedBox(height: 10),
+                  ImagePick(
+                    controller: controller,
+                    title: "رفع صورة الموظف",
+                  ),
+                  const SizedBox(height: 25),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CommonField(
+                          controller: controller.employeeNameController,
+                          text: 'اسم الموظف',
+                          hintText: 'ادخل اسم الموظف',
+                          validator: 'الرجاء إدخال اسم الموظف',
+                          keyboardType: TextInputType.name,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CommonField(
+                          controller: controller.employeeNumberController,
+                          text: 'هاتف الموظف',
+                          hintText: 'ادخل هاتف الموظف',
+                          validator: 'الرجاء إدخال هاتف الموظف',
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CommonField(
+                          controller: controller.employeeMailController,
+                          text: 'البريد الإلكتروني للموظف',
+                          hintText: 'ادخل البريد الإلكتروني',
+                          validator: 'الرجاء إدخال البريد الإلكتروني',
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CommonField(
+                          controller: controller.employeeDesignationController,
+                          text: 'المسمى الوظيفي',
+                          hintText: 'ادخل المسمى الوظيفي',
+                          validator: 'الرجاء إدخال المسمى الوظيفي',
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CommonField(
+                          controller: controller.employeeDesignationController,
+                          text: 'الخبرة',
+                          hintText: 'ادخل الخبرة',
+                          validator: 'الرجاء إدخال الخبرة',
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: SfDatePickerWidget(
+                          selectedDate: controller.selectedDate,
+                          title: 'تاريخ الانضمام',
+                          maxDate: DateTime(2030),
+                          onSelectionChanged: (args) {
+                            if (args.value is DateTime) {
+                              controller.updateSelectedDate(args.value);
+                              Navigator.pop(context);
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+            confirmButtonFunction: () {});
+      },
+    );
+  }
+}

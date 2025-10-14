@@ -1,0 +1,166 @@
+import 'package:advocateoffice/controller/ui/case/case_view.dart';
+import 'package:advocateoffice/routes/screen_name.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_search_and_add_field_mobile.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_selectable_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_table_heading_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/datatable.dart';
+import 'package:advocateoffice/view/screen/case/case_view/mobile/widget/add_case_history.dart';
+import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:widget_zoom/widget_zoom.dart';
+
+class CaseHistoryTableMobile extends StatelessWidget {
+  CaseHistoryTableMobile({super.key, required this.controller, required this.width});
+  final CaseViewController controller;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SearchAndAddSectionWidgetMobile(
+              totalData: "Case History",
+              searchController: controller.searchController,
+              searchTap: (query) {
+                controller.filterCaseHistory(query);
+              },
+              buttonTap: () {
+                Get.to(CaseHistoryCreateMobile(controller: controller), routeName: '${RoutesName.caseDetails}/create');
+              },
+              buttonName: 'Add Case History',
+            ),
+            const SizedBox(height: 16),
+            Obx(
+              () => CommonTableWidget(
+                width: width,
+                listLength: controller.filteredCaseHistoryList.length,
+                dataColumn: [
+                  DataColumn2(label: Center(child: CustomTblHeadText(text: "SL")), fixedWidth: 50),
+                  const DataColumn2(label: CustomTblHeadText(text: "HEARING DATE")),
+                  const DataColumn2(label: CustomTblHeadText(text: "ACTIVITY")),
+                  const DataColumn2(label: CustomTblHeadText(text: "COURT DECISION")),
+                  const DataColumn2(label: CustomTblHeadText(text: "REMARK")),
+                  const DataColumn2(label: CustomTblHeadText(text: "CREATED AT")),
+                  const DataColumn2(label: Center(child: CustomTblHeadText(text: "ACTION")), fixedWidth: 120),
+                ],
+                dataRow: List.generate(
+                  controller.filteredCaseHistoryList.length,
+                  (index) {
+                    var data = controller.filteredCaseHistoryList[index];
+                    return DataRow(
+                      cells: [
+                        DataCell(CustomSelectableTextWidget(text: "${index + 1}")),
+                        DataCell(CustomSelectableTextWidget(text: "${data.nextHearingDate}")),
+                        DataCell(CustomSelectableTextWidget(text: "${data.activity}")),
+                        DataCell(CustomSelectableTextWidget(text: "${data.court}")),
+                        DataCell(CustomSelectableTextWidget(text: "${data.comment}")),
+                        DataCell(CustomSelectableTextWidget(text: "${data.createAt}")),
+                        DataCell(
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    child: const Icon(
+                                      Icons.remove_red_eye,
+                                      size: 20,
+                                    ),
+                                    onTap: () {
+                                      showViewDialog(
+                                          context: context,
+                                          title: "Case Hearing Document",
+                                          img:
+                                          "https://png.pngtree.com/template/20210823/ourmid/pngtree-elegant-professional-invoice-template-design-image_579636.jpg");
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    child: const Icon(Icons.edit, size: 20),
+                                    onTap: () {
+                                      Get.to(CaseHistoryCreateMobile(controller: controller), routeName: '${RoutesName.caseDetails}/create');
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void showViewDialog({required BuildContext context, required String title, required String img}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: AlertDialog(
+            backgroundColor: Theme.of(context).cardColor,
+            surfaceTintColor: Theme.of(context).cardColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.headlineMedium!.color,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Theme.of(context).textTheme.headlineMedium!.color,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+            content: Container(
+              width: 500,
+              child: Column(
+                spacing: 16,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  WidgetZoom(
+                    heroAnimationTag: 'tag',
+                    zoomWidget: Image.network(img),
+                  )
+                  // FadeInImage(
+                  //     placeholder: NetworkImage("https://expensesreceipt.com/assets/img/hotel-invoice-expenses-receipt-generator1.png?ver=1.231"),
+                  //     image: NetworkImage("https://expensesreceipt.com/assets/img/hotel-invoice-expenses-receipt-generator1.png?ver=1.231"))
+                  // Container(
+                  //   height: 500,
+                  //   width: 500,
+                  //   decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), image: DecorationImage(image: NetworkImage(img))),
+                  // )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

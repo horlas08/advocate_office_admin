@@ -1,0 +1,303 @@
+import 'package:advocateoffice/controller/ui/visitor.dart';
+import 'package:advocateoffice/model/visitor.dart';
+import 'package:advocateoffice/routes/screen_name.dart';
+import 'package:advocateoffice/view/common_widgets.dart/header_mobile.dart';
+import 'package:advocateoffice/view/common_widgets.dart/mobile_nav_bar.dart';
+import 'package:advocateoffice/view/common_widgets.dart/dashboard_shimmer.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:advocateoffice/utils/app_colors.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_alertDialogue.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_search_and_add_field_mobile.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_selectable_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_table_heading_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_text.dart';
+import 'package:advocateoffice/view/common_widgets.dart/datatable.dart';
+import 'package:advocateoffice/view/screen/visitor/mobile/widgets/add.dart';
+import 'package:advocateoffice/view/screen/visitor/mobile/widgets/edit.dart';
+import 'package:data_table_2/data_table_2.dart';
+
+class VisitorMobile extends StatelessWidget {
+  VisitorMobile({super.key, required this.controller, required this.width});
+  final VisitorController controller;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const DashboardHeaderMobile(title: 'Visitor'),
+      ),
+      drawer: NavigationBarViewMobile(),
+      body: Obx(
+        () => controller.isLoading.isTrue
+            ? DashboardShimmer()
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SearchAndAddSectionWidgetMobile(
+                              searchTap: (searchTap) {},
+                              buttonTap: () {
+                                controller.visitorNameController.clear();
+                                controller.visitorNumberController.clear();
+                                controller.selectPriority.value = "High";
+                                controller.selectCondition.value = "Positive";
+                                controller.selectCaseType.value = "Property";
+                                Get.to(VisitorAddMobile(
+                                  controller: controller,
+                                ));
+                              },
+                              buttonName: "إضافة زائر",
+                              totalData: "",
+                            ),
+                            const SizedBox(height: 16),
+                            Obx(
+                              () => CommonTableWidget(
+                                width: width,
+                                listLength:
+                                    controller.filteredVisitorList.length,
+                                dataColumn: [
+                                  DataColumn2(
+                                      label: Center(
+                                          child: CustomTblHeadText(text: "SL")),
+                                      fixedWidth: 50),
+                                  DataColumn2(
+                                      label: Center(
+                                          child: CustomTblHeadText(
+                                              text: "هوية الزائر")),
+                                      fixedWidth: 120),
+                                  DataColumn2(
+                                      label: CustomTblHeadText(
+                                          text: "اسم الزائر")),
+                                  DataColumn2(
+                                      label: Center(
+                                          child: CustomTblHeadText(
+                                              text: "هاتف"))),
+                                  DataColumn2(
+                                      label:
+                                          CustomTblHeadText(text: "نوع القضية")),
+                                  DataColumn2(
+                                      label:
+                                          CustomTblHeadText(text: "الأولوية")),
+                                  DataColumn2(
+                                      label: CustomTblHeadText(
+                                          text: "تم الإنشاء بواسطة")),
+                                  DataColumn2(
+                                      label: Center(
+                                          child: CustomTblHeadText(
+                                              text: "ملاحظة"))),
+                                  DataColumn2(
+                                      label: Center(
+                                          child: CustomTblHeadText(
+                                              text: "إجراءات")),
+                                      fixedWidth: 150),
+                                ],
+                                dataRow: List.generate(
+                                  controller.filteredVisitorList.length,
+                                  (index) {
+                                    var data =
+                                        controller.filteredVisitorList[index];
+                                    return DataRow(
+                                      cells: [
+                                        DataCell(Center(
+                                            child: CustomSelectableTextWidget(
+                                                text: "${index + 1}"))),
+                                        DataCell(Center(
+                                            child: CustomSelectableTextWidget(
+                                                text: data.id.toString()))),
+                                        DataCell(CustomSelectableTextWidget(
+                                            text: "${data.name.toString()}")),
+                                        DataCell(Center(
+                                            child: CustomSelectableTextWidget(
+                                                text: data.phone.toString()))),
+                                        DataCell(CustomSelectableTextWidget(
+                                            text: data.caseType.toString())),
+                                        DataCell(CustomSelectableTextWidget(
+                                            text: data.priority.toString())),
+                                        DataCell(CustomSelectableTextWidget(
+                                            text: data.createdBy.toString())),
+                                        DataCell(CustomSelectableTextWidget(
+                                            text: "${data.remark.toString()}",
+                                            textOverflow: TextOverflow.ellipsis,
+                                            maxLine: 2)),
+                                        DataCell(
+                                          Center(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  child: InkWell(
+                                                    child: const Icon(
+                                                        Icons
+                                                            .arrow_circle_right_outlined,
+                                                        size: 20),
+                                                    onTap: () {
+                                                      Get.offNamed(
+                                                          "${RoutesName.clients}");
+                                                    },
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: InkWell(
+                                                    child: const Icon(
+                                                        Icons.visibility,
+                                                        size: 20),
+                                                    onTap: () {
+                                                      showVisitorsDialog(
+                                                          context: context,
+                                                          data: data);
+                                                    },
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: InkWell(
+                                                    child: const Icon(
+                                                        Icons.edit,
+                                                        size: 20),
+                                                    onTap: () {
+                                                      Get.to(VisitorEdit(
+                                                          data: data));
+                                                    },
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: InkWell(
+                                                    child: Icon(Icons.delete,
+                                                        size: 20,
+                                                        color: AppColors
+                                                            .errorColor),
+                                                    onTap: () {
+                                                      showDialog(
+                                                        barrierDismissible:
+                                                            false,
+                                                        anchorPoint:
+                                                            Offset(1, 1),
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            CustomAlertDialogue(
+                                                          title:
+                                                              "تأكيد الحذف",
+                                                          body: CustomTextWidget(
+                                                              text:
+                                                                  "هل أنت متأكد من حذف هذا الزائر؟"),
+                                                          confirmButtonName:
+                                                              "حذف",
+                                                          confirmButtonFunction:
+                                                              () {},
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+      ),
+    );
+  }
+
+  void showVisitorsDialog(
+      {required BuildContext context, required VisitorModel data}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).cardColor,
+          surfaceTintColor: Theme.of(context).cardColor,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(),
+              CustomSelectableTextWidget(
+                  text: "عرض تفاصيل الزائر",
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
+              IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: Theme.of(context).textTheme.headlineMedium!.color,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          content: SizedBox(
+            width: 500,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 20),
+                myRow(title: "Visitor's ID", value: data.id.toString()),
+                myRow(title: "اسم الزائر", value: data.name.toString()),
+                myRow(title: "هاتف الزائر", value: data.phone.toString()),
+                myRow(title: "نوع القضية", value: data.caseType.toString()),
+                myRow(title: "رسوم التسجيل", value: data.fee.toString()),
+                myRow(title: "الأولوية", value: data.priority.toString()),
+                myRow(title: "تم الإنشاء بواسطة", value: data.createdBy.toString()),
+                myRow(title: "تم الإنشاء في", value: data.createdAt.toString()),
+                myRow(
+                    title: "ملاحظة",
+                    maxLine: 5,
+                    value: "${data.remark.toString()}"),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget myRow({required String title, required String value, int? maxLine}) {
+    return Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              child: CustomSelectableTextWidget(
+            text: title,
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          )),
+          Expanded(
+              flex: 2,
+              child: CustomSelectableTextWidget(
+                text: value,
+                maxLine: maxLine ?? 1,
+                textAlign: TextAlign.end,
+              )),
+        ],
+      ),
+    );
+  }
+}

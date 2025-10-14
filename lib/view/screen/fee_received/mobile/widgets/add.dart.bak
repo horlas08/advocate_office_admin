@@ -1,0 +1,128 @@
+import 'package:advocateoffice/controller/ui/payment_invoice/monye.dart';
+import 'package:advocateoffice/view/common_widgets.dart/common_drop_down.dart';
+import 'package:advocateoffice/view/common_widgets.dart/common_field.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_button.dart';
+import 'package:advocateoffice/view/common_widgets.dart/custom_text.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class FeeCreateMobile extends StatelessWidget {
+	FeeCreateMobile({super.key, required this.controller});
+	final controller;
+
+	@override
+	Widget build(BuildContext context) {
+		return Scaffold(
+			appBar: AppBar(
+				title: CustomTextWidget(
+					text: "Payment Create",
+					fontColor: Colors.white,
+				),
+			),
+			body: SingleChildScrollView(
+				child: Container(
+					color: Theme.of(context).focusColor,
+					padding: const EdgeInsets.all(12),
+					child: Form(
+						key: controller.fromKey,
+						child: Column(
+							mainAxisSize: MainAxisSize.min,
+							crossAxisAlignment: CrossAxisAlignment.start,
+							children: [
+								const SizedBox(height: 20),
+								CommonDropDown(
+									context: context,
+									label: "Select Case ID",
+									value: controller.selectCaseId,
+									items: controller.caseIdList,
+									onChanged: (value) {
+										if (value != null) {
+											controller.selectCaseId.value = value;
+										}
+									},
+								),
+								const SizedBox(height: 16),
+								CommonField(
+									controller: controller.clientNameController,
+									readOnly: true,
+									text: 'Client Name',
+									hintText: 'Enter Client name',
+									validator: 'Please, Enter client name',
+									keyboardType: TextInputType.name,
+								),
+								const SizedBox(height: 16),
+								CommonField(
+									controller: controller.clientNumberController,
+									readOnly: true,
+									text: 'Client Phone Number',
+									hintText: 'Enter client phone number',
+									validator: 'Please ,Enter client phone number',
+									keyboardType: const TextInputType.numberWithOptions(
+										decimal: true,
+									),
+									inputFormatters: [
+										FilteringTextInputFormatter.digitsOnly,
+									],
+								),
+								const SizedBox(height: 16),
+								CommonField(
+									controller: controller.feeController,
+									text: 'Client Fee Amount',
+									hintText: 'Enter client fee amount',
+									validator: 'Please ,Enter client fee amount',
+									keyboardType: const TextInputType.numberWithOptions(
+										decimal: true,
+									),
+									inputFormatters: [
+										FilteringTextInputFormatter.digitsOnly,
+									],
+								),
+								const SizedBox(height: 16),
+								CommonDropDown(
+									context: context,
+									label: "Select Payment Type",
+									value: controller.selectedPaymentType,
+									items: controller.paymentTypeList,
+									onChanged: (value) {
+										if (value != null) {
+											controller.selectedPaymentType.value = value;
+										}
+									},
+								),
+								const SizedBox(height: 16),
+								CommonField(
+									controller: controller.remarkController,
+									minLines: 5,
+									text: 'Comment',
+									hintText: 'Enter comment',
+									validator: 'Please, Enter comment',
+									keyboardType: TextInputType.text,
+								),
+								const SizedBox(height: 16),
+								CustomButtonWidget(
+									width: MediaQuery.of(context).size.width,
+									onTap: () async {
+										await PaymentReceiptPdf().generateTwoReceipts(
+											{
+												"mrNo": "12345",
+												"date": "2024-12-22",
+												"name": "Md. Abdullah Al Siddik",
+												"contact": "01737374083",
+												"caseId": "CASE1001",
+												"caseType": "Civil",
+												"paymentMethod": "Bkash",
+												"amount": "500000.00",
+											},
+										);
+									},
+									buttonName: 'أكد',
+								)
+							],
+						),
+					),
+				),
+			),
+		);
+	}
+}
+
