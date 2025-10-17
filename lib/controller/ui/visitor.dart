@@ -11,6 +11,7 @@ class VisitorController extends GetxController {
   final TextEditingController visitorNameController = TextEditingController();
   final TextEditingController visitorNumberController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
   final TextEditingController commentController = TextEditingController();
   final TextEditingController referenceNamePhoneController = TextEditingController();
   final fromKey = Get.put(GlobalKey<FormState>());

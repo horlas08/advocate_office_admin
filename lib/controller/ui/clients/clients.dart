@@ -20,6 +20,9 @@ class ClientsController extends GetxController {
   final TextEditingController clientFatherNameController =
       TextEditingController();
   final TextEditingController clientVillageController = TextEditingController();
+  final TextEditingController extra1 = TextEditingController();
+  final TextEditingController extra2 = TextEditingController();
+  final TextEditingController extra3 = TextEditingController();
   final TextEditingController clientProfessionController =
       TextEditingController();
   RxList<ClientListModel> clientsList = <ClientListModel>[].obs;

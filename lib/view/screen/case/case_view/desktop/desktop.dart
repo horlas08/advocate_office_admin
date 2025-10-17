@@ -28,7 +28,7 @@ class CaseViewTabletDesktop extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const DashboardHeader(title: 'تفاصيل القضية'),
+                    const DashboardHeader(title: 'تفاصيل الدعوى'),
                     const SizedBox(height: 20),
                     CaseDetailsDesktop(),
                     const SizedBox(height: 20),

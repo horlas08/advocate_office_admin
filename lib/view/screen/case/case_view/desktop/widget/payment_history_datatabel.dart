@@ -29,10 +29,10 @@ class PaymentHistoryTableDesktop extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TableTitleWidget(
-              title: "Payment History",
-              buttonName: "Add Payment",
+              title: "تاريخ الدفع",
+              buttonName: "إضافة الدفع",
               onTap: () {
-                _showAddDialog(context: context, title: "Add Payment");
+                _showAddDialog(context: context, title: "إضافة الدفع");
               },
             ),
             const SizedBox(height: 16),

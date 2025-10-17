@@ -14,11 +14,11 @@ class CaseHistoryTableDesktop extends StatelessWidget {
           children: [
             TableTitleWidget(
               title: "تاريخ القضية",
-              buttonName: "إضافة سجل قضية",
+              buttonName: "إضافة سجل الدعوى",
               onTap: () {
                 _showAddEditDialog(
                   context: context,
-                  title: "إضافة سجل قضية",
+                  title: "إضافة سجل الدعوى",
                 );
               },
             ),
@@ -30,11 +30,11 @@ class CaseHistoryTableDesktop extends StatelessWidget {
                 dataColumn: const [
                   DataColumn2(label: Center(child: CustomTblHeadText(text: "م")), fixedWidth: 50),
                   DataColumn2(label: CustomTblHeadText(text: "تاريخ الجلسة")),
-                  DataColumn2(label: CustomTblHeadText(text: "النشاط")),
-                  DataColumn2(label: CustomTblHeadText(text: "قرار المحكمة")),
+                  DataColumn2(label: CustomTblHeadText(text: "القرار")),
+                  DataColumn2(label: CustomTblHeadText(text: "المحكمة")),
                   DataColumn2(label: CustomTblHeadText(text: "ملاحظة")),
                   DataColumn2(label: CustomTblHeadText(text: "تاريخ الإنشاء")),
-                  DataColumn2(label: Center(child: CustomTblHeadText(text: "إجراءات")), fixedWidth: 120),
+                  DataColumn2(label: Center(child: CustomTblHeadText(text: "التفاصيل")), fixedWidth: 120),
                 ],
                 dataRow: List.generate(
                   controller.filteredCaseHistoryList.length,

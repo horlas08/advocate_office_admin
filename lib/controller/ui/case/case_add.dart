@@ -48,7 +48,7 @@ class CaseCreateController extends GetxController {
 
   var selectedCourt = "".obs;
 
-  var courtList = ["المحكمة العليا", "المحكمة العليا", "المحكمة الجزئية", "محكمة الأسرة", "محكمة العمل"].obs;
+  var courtList = ["المحكمة العليا", "المحكمة الجزئية", "محكمة الأسرة", "محكمة العمل"].obs;
 
   var selectCaseStage = "".obs;
 

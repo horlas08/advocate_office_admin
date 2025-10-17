@@ -57,8 +57,8 @@ class CaseDetailsDesktop extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomTextWidget(text: "إجمالي الرسوم: 50,000 ${currencySymbol}"),
-                CustomTextWidget(text: "الرسوم المستحقة: 40,000 ${currencySymbol}"),
+                CustomTextWidget(text: "إجمالي الاتعاب: 50,000 ${currencySymbol}"),
+                CustomTextWidget(text: "الاتعاب المستحقة: 40,000 ${currencySymbol}"),
               ],
             ),
           ),
@@ -78,7 +78,7 @@ class CaseDetailsDesktop extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomTextWidget(
-                text: "تفاصيل القضية",
+                text: "تفاصيل الدعوى",
                 fontColor: Theme.of(context).textTheme.headlineMedium!.color,
                 fontWeight: FontWeight.w600),
             const SizedBox(height: 16),
@@ -91,15 +91,15 @@ class CaseDetailsDesktop extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildCaseDetailRow("معرّف القضية : ", "2323"),
+                      _buildCaseDetailRow("معرّف الدعوى : ", "2323"),
                       const SizedBox(height: 8),
-                      _buildCaseDetailRow("نوع القضية : ", "مدني"),
+                      _buildCaseDetailRow("نوع الدعوى : ", "مدني"),
                       const SizedBox(height: 8),
-                      _buildCaseDetailRow("قسم القضية : ", "302"),
+                      _buildCaseDetailRow("قسم الدعوى : ", "302"),
                       const SizedBox(height: 8),
-                      _buildCaseDetailRow("حالة القضية : ", "جارية"),
+                      _buildCaseDetailRow("حالة الدعوى : ", "جارية"),
                       const SizedBox(height: 8),
-                      _buildCaseDetailRow("مرحلة القضية : ", "مقدمة"),
+                      _buildCaseDetailRow("مرحلة الدعوى : ", "مقدمة"),
                       const SizedBox(height: 8),
                       _buildCaseDetailRow("تاريخ الجلسة القادمة : ", "10 يونيو 2025"),
                       const SizedBox(height: 8),

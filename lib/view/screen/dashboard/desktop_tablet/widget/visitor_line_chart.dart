@@ -78,7 +78,7 @@ class VisitorLineChartDesktop extends StatelessWidget {
             leftTitles: AxisTitles(
               axisNameSize: 40,
               axisNameWidget: Text(
-                'الزوار',
+                'الجلسات',
                 style: TextStyle(
                   color: Theme.of(context).textTheme.headlineMedium!.color,
                   fontSize: 20,
@@ -105,7 +105,7 @@ class VisitorLineChartDesktop extends StatelessWidget {
             topTitles: AxisTitles(
               axisNameSize: 40,
               axisNameWidget: Text(
-                'بيانات اجمالي زالجلسات.${DateFormat('MMMM').format(now)}',
+                'بيانات اجمالي الجلسات ${DateFormat('MMMM').format(now)}',
                 style: TextStyle(
                   color: Theme.of(context).textTheme.headlineMedium!.color,
                   fontWeight: FontWeight.bold,

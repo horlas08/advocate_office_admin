@@ -70,43 +70,43 @@ class CaseListTabletDesktop extends StatelessWidget {
                                           DataColumn2(
                                               label: Center(
                                                   child: CustomTblHeadText(
-                                                      text: "SL")),
+                                                      text: "م")),
                                               fixedWidth: 50),
                                           DataColumn2(
                                               label: Center(
                                                   child: CustomTblHeadText(
-                                                      text: "معرّف القضية")),
+                                                      text: "رقم الدعوی")),
                                               fixedWidth: 120),
                                           DataColumn2(
                                               label: Center(
                                                   child: CustomTblHeadText(
-                                                      text: "معلومات العميل"))),
+                                                      text: "اسم الموكل"))),
                                           DataColumn2(
                                               label: Center(
                                                   child: CustomTblHeadText(
-                                                      text: "نوع العميل"))),
+                                                      text: "صفة الموكل"))),
                                           DataColumn2(
                                               label: CustomTblHeadText(
-                                                  text: "نوع القضية")),
+                                                  text: "نوع الدعوى")),
                                           DataColumn2(
                                               label: CustomTblHeadText(
-                                                  text: "مرحلة القضية")),
+                                                  text: "مرحلة الدعوى")),
                                           DataColumn2(
                                               label: CustomTblHeadText(
                                                   text: "الحالة")),
                                           DataColumn2(
                                               label: CustomTblHeadText(
-                                                  text: "الأولوية")),
+                                                  text: "االأولوية")),
                                           DataColumn2(
                                               label: CustomTblHeadText(
-                                                  text: "ملاحظة")),
+                                                  text: "الملاحظات")),
                                           DataColumn2(
                                               label: CustomTblHeadText(
-                                                  text: "مخصص إلى")),
+                                                  text: "المكلف بالاجراء")),
                                           DataColumn2(
                                               label: Center(
                                                   child: CustomTblHeadText(
-                                                      text: "إجراءات")),
+                                                      text: "التفاصيل")),
                                               fixedWidth: 120),
                                         ],
                                         dataRow: List.generate(

@@ -31,7 +31,7 @@ class StatsRow extends StatelessWidget {
         ),
         _buildContainer(
           context: context,
-          title: "الدعاويالدعاوي",
+          title: "الدعاوي",
           subTitle1: "الإجمالي",
           subValue1: "205",
           subTitle2: "ليوم",

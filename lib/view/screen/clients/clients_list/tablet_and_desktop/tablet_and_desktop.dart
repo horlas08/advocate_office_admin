@@ -50,7 +50,7 @@ class ClientsTabletDesktop extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SearchAndAddSectionWidget(
-                                buttonName: 'إضافة عميل',
+                                buttonName: 'موكل جديد',
                                 totalData:
                                 "إجمالي العملاء: ${controller.clientsList.length}",
                                 searchController: controller.nameSearchController,
@@ -73,19 +73,19 @@ class ClientsTabletDesktop extends StatelessWidget {
                                         label: Center(child: CustomTblHeadText(text: "م")),
                                         fixedWidth: 50),
                                     DataColumn2(
-                                        label: Center(child: CustomTblHeadText(text: "معرّف العميل")),
+                                        label: Center(child: CustomTblHeadText(text: "الرقم المدنى")),
                                         fixedWidth: 120),
-                                    DataColumn2(label: CustomTblHeadText(text: "اسم العميل")),
-                                    DataColumn2(label: CustomTblHeadText(text: "اسم والد العميل")),
+                                    DataColumn2(label: CustomTblHeadText(text: "اسم الموكل")),
+                                    DataColumn2(label: CustomTblHeadText(text: "الاسم الأخير")),
                                     DataColumn2(label: CustomTblHeadText(text: "المهنة")),
-                                    DataColumn2(label: CustomTblHeadText(text: "رقم الهاتف/بديل")),
+                                    DataColumn2(label: CustomTblHeadText(text: "المهنة")),
                                     DataColumn2(label: CustomTblHeadText(text: "البريد الإلكتروني")),
                                     DataColumn2(
-                                        label: Center(child: CustomTblHeadText(text: "القضية")),
+                                        label: Center(child: CustomTblHeadText(text: "الدعاوي")),
                                         fixedWidth: 100),
-                                    DataColumn2(label: CustomTblHeadText(text: "تم الإنشاء بواسطة")),
+                                    DataColumn2(label: CustomTblHeadText(text: "أنشئ بواسطة")),
                                     DataColumn2(
-                                        label: Center(child: CustomTblHeadText(text: "إجراءات")),
+                                        label: Center(child: CustomTblHeadText(text: "التفاصيل")),
                                         fixedWidth: 150),
                                   ],
                                   dataRow: List.generate(
@@ -190,9 +190,9 @@ class ClientsTabletDesktop extends StatelessWidget {
                           child: CommonField(
                             controller: controller.clientNameController,
                             validatorIcon: true,
-                            text: 'اسم العميل',
-                            hintText: 'أدخل اسم العميل',
-                            validator: 'أدخل اسم العميل',
+                            text: 'اسم الموكل',
+                            hintText: 'أدخل اسم الموكل',
+                            validator: 'أدخل اسم الموكل',
                             keyboardType: TextInputType.name,
                           ),
                         ),
@@ -201,9 +201,9 @@ class ClientsTabletDesktop extends StatelessWidget {
                           child: CommonField(
                             controller: controller.clientFatherNameController,
                             validatorIcon: true,
-                            text: 'اسم والد العميل',
-                            hintText: 'أدخل اسم والد العميل',
-                            validator: 'أدخل اسم والد العميل',
+                            text: 'الاسم الأخير',
+                            hintText: 'أدخل اسم الأخير',
+                            validator: 'أدخل اسم الأخير',
                             keyboardType: TextInputType.name,
                           ),
                         ),
@@ -227,8 +227,8 @@ class ClientsTabletDesktop extends StatelessWidget {
                         Expanded(
                           child: CommonField(
                             controller: controller.clientAlternativeNumberController,
-                            text: 'رقم الهاتف البديل',
-                            hintText: 'أدخل رقم الهاتف البديل',
+                            text: 'رقم الهاتف الموكل',
+                            hintText: 'أدخل رقم الهاتف الموكل',
                             keyboardType: const TextInputType.numberWithOptions(decimal: true),
                             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                           ),
@@ -253,9 +253,9 @@ class ClientsTabletDesktop extends StatelessWidget {
                           child: CommonField(
                             controller: controller.clientProfessionController,
                             validatorIcon: true,
-                            text: 'المهنة',
-                            hintText: 'أدخل المهنة',
-                            validator: 'أدخل المهنة',
+                            text: 'المهنةالموكل',
+                            hintText: 'أدخل المهنةالموكل',
+                            validator: 'أدخل المهنةالموكل',
                             keyboardType: TextInputType.text,
                           ),
                         ),
@@ -265,26 +265,24 @@ class ClientsTabletDesktop extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: CommonDropDown(
-                            context: context,
-                            label: "اختر المنطقة",
-                            value: controller.selectedDivision,
-                            items: controller.testList,
-                            onChanged: (value) {
-                              if (value != null) controller.selectedDivision.value = value;
-                            },
+                          child: CommonField(
+                            controller: controller.extra1,
+                            text: "المنطقة الادارية",
+                            validatorIcon: true,
+                            hintText: 'اكتب اسم المنطقة',
+                            validator: 'أدخل المنطقة الادارية',
+                            keyboardType: TextInputType.text,
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child: CommonDropDown(
-                            context: context,
-                            label: "اختر المديرية",
-                            value: controller.selectedDistrict,
-                            items: controller.testList,
-                            onChanged: (value) {
-                              if (value != null) controller.selectedDistrict.value = value;
-                            },
+                          child: CommonField(
+                            controller: controller.extra2,
+                            text: "،الولاية",
+                            validatorIcon: true,
+                            hintText: 'اكتب اسم الولاية',
+                            validator: 'أدخل اكتب اسم الولاية',
+                            keyboardType: TextInputType.text,
                           ),
                         ),
                       ],
@@ -293,14 +291,13 @@ class ClientsTabletDesktop extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: CommonDropDown(
-                            context: context,
-                            label: "اختر الثانا",
-                            value: controller.selectedThana,
-                            items: controller.testList,
-                            onChanged: (value) {
-                              if (value != null) controller.selectedThana.value = value;
-                            },
+                          child: CommonField(
+                            controller: controller.extra3,
+                            text: "ا- المنطقة الفرعية / القرية",
+                            validatorIcon: true,
+                            hintText: 'اكتب اسم المنطقة الفرعية',
+                            validator: 'أدخل اكتب اسم المنطقة الفرعية',
+                            keyboardType: TextInputType.text,
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -308,9 +305,9 @@ class ClientsTabletDesktop extends StatelessWidget {
                           child: CommonField(
                             controller: controller.clientVillageController,
                             validatorIcon: true,
-                            text: 'القرية',
-                            hintText: 'أدخل القرية',
-                            validator: 'أدخل القرية',
+                            text: 'صفة الموكل',
+                            hintText: 'اكتب صفة الموكل',
+                            validator: 'اكتب صفة الموكل',
                             keyboardType: TextInputType.text,
                           ),
                         ),

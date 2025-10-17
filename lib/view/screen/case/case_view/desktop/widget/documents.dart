@@ -12,7 +12,7 @@ class DocumentRowDesktop extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomTextWidget(text: "وثيقة القضية", fontWeight: FontWeight.w600),
+        CustomTextWidget(text: "مستندات الدعوى", fontWeight: FontWeight.w600),
         SizedBox(height: 16),
         Wrap(
           spacing: 16,

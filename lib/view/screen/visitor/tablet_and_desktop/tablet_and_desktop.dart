@@ -70,10 +70,10 @@ class VisitorTabletDesktop extends StatelessWidget {
                                         width: width ?? MediaQuery.sizeOf(context).width - 220,
                                         listLength: controller.filteredVisitorList.length,
                                         dataColumn: [
-                                          DataColumn2(label: Center(child: CustomTblHeadText(text: "SL")), fixedWidth: 50),
-                                          DataColumn2(label: Center(child: CustomTblHeadText(text: "هوية الزائر")), fixedWidth: 120),
+                                          DataColumn2(label: Center(child: CustomTblHeadText(text: "ت")), fixedWidth: 50),
+                                          DataColumn2(label: Center(child: CustomTblHeadText(text: "الرقم المدني")), fixedWidth: 120),
                                           DataColumn2(label: CustomTblHeadText(text: "اسم الزائر")),
-                                          DataColumn2(label: Center(child: CustomTblHeadText(text: "هاتف"))),
+                                          DataColumn2(label: Center(child: CustomTblHeadText(text: "رقم الهاتف"))),
                                           DataColumn2(label: CustomTblHeadText(text: "نوع القضية")),
                                           DataColumn2(label: CustomTblHeadText(text: "الأولوية")),
                                           DataColumn2(label: Center(child: CustomTblHeadText(text: "ملاحظة"))),
@@ -315,11 +315,11 @@ class VisitorTabletDesktop extends StatelessWidget {
                     spacing: 16,
                     children: [
                       Expanded(
-                        child: CommonDropDown(
-                            context: context,
-                            label: "نوع القضية",
-                            value: controller.selectCaseType,
-                            items: controller.caseTypeList,
+                        child: CommonField(
+                            controller: controller.titleController,
+                            text: "عنوان الدعوى",
+                            hintText: "عنوان الدعوى",
+                            validator: "عنوان الدعوى",
                             onChanged: (value) {
                               controller.selectCaseType.value = value!;
                             }),

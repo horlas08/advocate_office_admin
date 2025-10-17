@@ -57,7 +57,7 @@ class NavigationBarView extends StatelessWidget {
                     _buildNavItem(
                       context: context,
                       icon: Icons.dashboard,
-                      label: 'لوحة القيادة',
+                      label: 'لوحة البيانات',
                       page: DashboardScreen(),
                       routeName: RoutesName.dashboard,
                     ),
@@ -65,7 +65,7 @@ class NavigationBarView extends StatelessWidget {
                     _buildNavItem(
                       context: context,
                       icon: Icons.person_pin,
-                      label: 'زائر',
+                      label: ' الزوار',
                       page: VisitorScreen(),
                       routeName: RoutesName.visitor,
                     ),
@@ -73,7 +73,7 @@ class NavigationBarView extends StatelessWidget {
                     _buildNavItem(
                       context: context,
                       icon: Icons.switch_account_rounded,
-                      label: 'زبون',
+                      label: 'الموكلين',
                       page: ClientsScreen(),
                       routeName: RoutesName.clients,
                     ),
@@ -81,7 +81,7 @@ class NavigationBarView extends StatelessWidget {
                     _buildNavItem(
                       context: context,
                       icon: Icons.file_copy,
-                      label: '• نقل المسميات',
+                      label: 'الدعاوي',
                       page: CaseScreen(),
                       routeName: RoutesName.cases,
                     ),
@@ -89,7 +89,7 @@ class NavigationBarView extends StatelessWidget {
                     _buildNavItem(
                       context: context,
                       icon: Icons.record_voice_over,
-                      label: 'جلسة',
+                      label: 'الجلسات',
                       page: HearingManagementScreen(),
                       routeName: RoutesName.hearingManagement,
                     ),
@@ -97,7 +97,7 @@ class NavigationBarView extends StatelessWidget {
                     _buildNavItem(
                       context: context,
                       icon: Icons.monetization_on_outlined,
-                      label: 'تم استلام الرسوم',
+                      label: 'الاتعاب المستلمة',
                       page: FeeReceivedScreen(),
                       routeName: RoutesName.feeReceived,
                     ),
@@ -105,7 +105,7 @@ class NavigationBarView extends StatelessWidget {
                     _buildNavItem(
                       context: context,
                       icon: Icons.monetization_on_outlined,
-                      label: 'دخل إضافي',
+                      label: 'الدخل الاضافى',
                       page: ExtraIncomeScreen(),
                       routeName: RoutesName.extraIncome,
                     ),
@@ -113,7 +113,7 @@ class NavigationBarView extends StatelessWidget {
                     _buildNavItem(
                       context: context,
                       icon: Icons.explicit_outlined,
-                      label: 'نفقة',
+                      label: 'المصاريف',
                       page: ExpenseScreen(),
                       routeName: RoutesName.expense,
                     ),
